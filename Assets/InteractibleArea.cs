@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InteractibleArea : MonoBehaviour
 {
+    [SerializeField] InteractNotifier interactNotifier;
+
     // this is just here to keep track of the interactibles that the player is overlapping. consider the closest one
 
     private List<GameObject> overlappingInteractibles = new();
@@ -28,14 +30,21 @@ public class InteractibleArea : MonoBehaviour
         return closestGO; 
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnCollisionEnter(Collision collision)
     {
-        overlappingInteractibles.Add(col.gameObject);
-        Debug.Log(col.gameObject.name);
+        if (collision.gameObject.CompareTag("interactibles"))
+        {
+            interactNotifier.ShowInteract("Coffee!");
+            overlappingInteractibles.Add(collision.gameObject);
+            Debug.Log(collision.gameObject.name);
+        }
     }
-
-    void OnTriggerExit(Collider col)
+    void OnCollisionExit(Collision collision)
     {
-        overlappingInteractibles.Remove(col.gameObject); // lol. lmao
+        if (collision.gameObject.CompareTag("interactibles"))
+        {
+            interactNotifier.HideInteract();
+            overlappingInteractibles.Remove(collision.gameObject); // lol. lmao
+        }
     }
 }

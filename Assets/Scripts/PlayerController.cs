@@ -1,20 +1,20 @@
 using System.Net.Mime;
+using Unity.Cinemachine;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 25f;
-    [SerializeField] float groundDist;
-    [SerializeField] LayerMask terrainLayer;
     [SerializeField] CharacterController controller;
     [SerializeField] GameObject spriteObject;
     [SerializeField] float coffeeDecrementRate = 1.0f; // per second
     [SerializeField] ProgressBar coffeeProgressBar;
-    [SerializeField] InteractibleArea interactibleArea;
-
+    CinemachineCamera cinemaCam;
     Vector2 moveInput;
     Animator Animator => GetComponent<Animator>();
 
@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
     }
     float _coffeeMeter = 100.0f;
 
+    void Start()
+    {
+        cinemaCam = FindFirstObjectByType<CinemachineCamera>();
+    }
+
     private void Update()
     {
         Vector3 move = moveSpeed * Time.deltaTime * new Vector3(moveInput.x, 0, moveInput.y);
@@ -48,6 +53,13 @@ public class PlayerController : MonoBehaviour
 
         // update coffee
         CoffeeMeter -= coffeeDecrementRate * Time.deltaTime;
+        if (cinemaCam.TryGetComponent<CinemachineVolumeSettings>(out var volumeSettings))
+        {
+            if (volumeSettings.Profile.TryGet(out Vignette vignette))
+            {
+                vignette.intensity.value = 1.0f - (CoffeeMeter / 100.0f);
+            }
+        }
     }
 
     public void HandleMove(InputAction.CallbackContext context)
@@ -61,16 +73,8 @@ public class PlayerController : MonoBehaviour
     public void HandleInteract(InputAction.CallbackContext context)
     {
         if (context.performed)
-        { 
-            GameObject interacted = interactibleArea.TryInteract();
-            if (interacted != null)
-            {
-                if (interacted.CompareTag("CoffeeMaker"))
-                {
-                    ResetCoffee();
-                    Debug.Log("refreshing!");
-                }
-            }
+        {
+            GetComponentInChildren<Interactor>().Interact();
         }
     }
 
