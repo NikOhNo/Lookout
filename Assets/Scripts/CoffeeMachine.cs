@@ -47,17 +47,22 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         }
     }
 
+    private void ShowInteractText()
+    {
+        Interactor?.Notifier.ShowInteract(InteractText);
+    }
+
     private void StartBrewing()
     {
-        Interactor?.Notifier.ShowInteract("Brewing...");
         brewing = true;
+        ShowInteractText();
         expendedTime = 0.0f;
         audioSource.PlayOneShot(audioSource.clip);
     }
     
     private void FinishBrewing()
     {
-        Interactor?.Notifier.ShowInteract("COFFEE");
+        ShowInteractText();
         coffeeReady = true;
         brewing = false;
     }
@@ -68,6 +73,6 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         coffeeReady = false;
         brewing = false;
         expendedTime = 0.0f;
-        Interactor.Notifier.ShowInteract("Brew Coffee");
+        ShowInteractText();
     }
 }

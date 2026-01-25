@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8760269db515c5e44a68cd6cd5ab73f3, type: 3}
+  m_Name: ML1
+  m_EditorClassIdentifier: 
+  giveTaskDialogue: "My, you are the new night guard, are you not? \nIt was truly
+    a pity to lose the last one... alas, they were not quite up to our standards.\nI
+    am certain you will be capable of it, however. Merely appease the art, and the
+    rest will come as it should."
+  completeTaskDialogue: "You see? Not too difficult. \nIt is always a pleasant time
+    here, and the light shines so delightfully on my canvas."
+  failTaskDialogue: 
+  isSpecialDialogue: 0
+  specialDialogue: 
