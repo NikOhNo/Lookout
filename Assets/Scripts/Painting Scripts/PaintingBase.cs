@@ -15,7 +15,9 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Interactor?.Notifier.ShowInteract(InteractText);
+        Debug.Log("yeah i'm interacting");
+        GetNextDialogue();
+        // Interactor?.Notifier.ShowInteract(InteractText);
     }
 
     protected virtual void GetNextDialogue()

@@ -14,7 +14,7 @@ public class Interactor : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<IInteractable>(out var interactable))
         {
-            Debug.Log($"Entered trigger with interactable: {interactable.InteractText}");
+            // Debug.Log($"Entered trigger with interactable: {interactable.InteractText}");
             if (focusedInteractable != null) focusedInteractable.Interactor = null;
             focusedInteractable = interactable;
             focusedInteractable.Interactor = this;

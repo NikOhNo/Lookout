@@ -19,11 +19,13 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
     {
         audioSource = GetComponent<AudioSource>();
         brewTime = audioSource.clip.length;
+        brewTime = 5.0f;
+        Debug.Log(coffeeReady);
     }
     
     void Update()
     {
-        if (!coffeeReady)
+        if (!coffeeReady && brewing)
         {
             expendedTime += Time.deltaTime;
             // Finished brewing coffee
@@ -62,9 +64,9 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
     
     private void FinishBrewing()
     {
-        ShowInteractText();
         coffeeReady = true;
         brewing = false;
+        ShowInteractText();
     }
 
     private void GiveCoffee()

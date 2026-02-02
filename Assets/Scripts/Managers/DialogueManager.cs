@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
     //Runtime Vars
     public bool isTypeWriterRunning = false;
     public bool isDialogueBoxActive = false;
-    private List<string> subStrings;
+    private List<string> subStrings = new();
     private int currentSubStringIndex = 0;
     private string stringCurrentlyBeingTypwritten;
 
@@ -53,6 +53,7 @@ public class DialogueManager : MonoBehaviour
     }
 
 
+    // alvin did you test this
     private void CreateSubStrings(string dialogue)
     {
         subStrings = new List<string>();
