@@ -31,7 +31,8 @@ public class PKevin : PaintingBase
     private IEnumerator PlayRandomMeow()
     {
         audioSource.PlayOneShot(meowSFX[UnityEngine.Random.Range(0, meowSFX.Length - 1)]);
-        yield return new WaitForSeconds((1 + (currentTimeUntilFail / timeUntilFail)) * (maxTimeBetweenMeows - minTimeBetweenMeows));
+        yield return new WaitForSeconds((1 + (currentTimeUntilFail / timeUntilFail))
+            * (maxTimeBetweenMeows - minTimeBetweenMeows));
         StartCoroutine(PlayRandomMeow());
     }
 

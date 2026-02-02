@@ -56,7 +56,7 @@ public class DialogueManager : MonoBehaviour
     private void CreateSubStrings(string dialogue)
     {
         subStrings = new List<string>();
-        int lastIndex = 0;
+        int lastIndex;
         char[] charArray = dialogue.ToCharArray();
         for (int i = 0; i < charArray.Length; i++)
         {
@@ -74,7 +74,7 @@ public class DialogueManager : MonoBehaviour
     {
         isTypeWriterRunning = true;
         string stringToBuild = "";
-        dialogue = stringCurrentlyBeingTypwritten;
+        stringCurrentlyBeingTypwritten = dialogue;
         foreach (char character in dialogue)
         { 
             stringToBuild = stringToBuild + character;

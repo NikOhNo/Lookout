@@ -2847,6 +2847,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue: []
+  paintingName: 
   placeHolder: 
   meowSFX:
   - {fileID: 8300000, guid: 685eefe2d8d9029428f66454328fd023, type: 3}
@@ -2864,6 +2865,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1738016880093456335, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: paintingName
+      value: Mona Lisa
+      objectReference: {fileID: 0}
     - target: {fileID: 1738016880093456335, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
       propertyPath: dialogue.Array.size
       value: 1

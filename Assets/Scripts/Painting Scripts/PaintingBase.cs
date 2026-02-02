@@ -6,9 +6,11 @@ public class PaintingBase : MonoBehaviour, IInteractable
     //Refs
     public DialogueScriptableObject[] dialogue;
 
+    //Tuning Vars
+    [SerializeField] private string paintingName;
 
     public Interactor Interactor { get; set; }
-    public string InteractText => "";
+    public string InteractText => "Talk with " + paintingName;
     [SerializeField] protected string placeHolder;
 
     public void Interact()
@@ -29,7 +31,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
-        
+
     }
 
     // Update is called once per frame
