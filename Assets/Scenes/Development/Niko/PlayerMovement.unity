@@ -2661,6 +2661,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 476804046896830974, guid: fac03e800aebfc448a26c189afe8865a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1484146770371692012, guid: fac03e800aebfc448a26c189afe8865a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -2717,9 +2721,21 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 4956960895131875749, guid: fac03e800aebfc448a26c189afe8865a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956960895131875749, guid: fac03e800aebfc448a26c189afe8865a, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 7949891457877499190, guid: fac03e800aebfc448a26c189afe8865a, type: 3}
       propertyPath: m_Name
       value: Kevin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949891457877499190, guid: fac03e800aebfc448a26c189afe8865a, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2877,6 +2893,10 @@ PrefabInstance:
       propertyPath: 'dialogue.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 163a738f000939c4daf0e3691bd59ce9, type: 2}
+    - target: {fileID: 2627782735009010172, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3923355624725843438, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.38
@@ -2920,6 +2940,18 @@ PrefabInstance:
     - target: {fileID: 5528591380725601588, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
       propertyPath: m_Name
       value: Mona Lisa
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528591380725601588, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7359050099987231143, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7359050099987231143, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 128
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
