@@ -14,4 +14,11 @@ public class DialogueScriptableObject : ScriptableObject
     [TextArea]
     [HideInInspector]
     public string specialDialogue;
+    [HideInInspector]
+    public bool hasResponseChoices = false;
+    [HideInInspector]
+    [TextArea]
+    public string[] responseOptions;
+    [HideInInspector]
+    public int correctResponseIndex;
 }
