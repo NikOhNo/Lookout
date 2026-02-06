@@ -30,7 +30,6 @@ public class DialogueManager : MonoBehaviour
         
     }
 
-
     public void DisplayNextDialogue()
     {
         if (currentSubStringIndex == subStrings.Count)
@@ -60,6 +59,7 @@ public class DialogueManager : MonoBehaviour
 
 
     // alvin did you test this
+    //It works meow T_T -cralvin
     private void CreateSubStrings(string dialogue)
     {
         subStrings = new List<string>();
