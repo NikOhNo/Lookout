@@ -6,9 +6,10 @@ public class ReferenceManager : MonoBehaviour
     public static ReferenceManager Instance { get; private set; }
     //Refs
     public DialogueManager dialogueManager;
+    public TaskManager taskManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         Instance = this;
     }

@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class PMonaLisa : PaintingBase
 {
+
+    protected override void Start()
+    {
+        base.Start();
+        taskManager.MonaLisaTaskComplete += TaskComplete;
+    }
+
     protected override void GetNextDialogue()
     {
-        ReferenceManager.Instance.dialogueManager.DisplayDialogue(dialogue[0].giveTaskDialogue);
     }
 
     protected override void UpdateStatus()

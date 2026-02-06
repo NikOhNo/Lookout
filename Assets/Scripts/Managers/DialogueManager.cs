@@ -14,30 +14,37 @@ public class DialogueManager : MonoBehaviour
 
     //Runtime Vars
     public bool isTypeWriterRunning = false;
-    public bool isDialogueBoxActive = false;
+    public bool IsDialogueRunning => textBox.activeSelf;
     private List<string> subStrings = new();
     private int currentSubStringIndex = 0;
-    private string stringCurrentlyBeingTypwritten;
+    private string stringCurrentlyBeingTypewritten;
 
     //Tuning Vars
     [SerializeField] private float typeWriterDelayBetweenChars;
 
-    public void DisplayDialogue(string dialogue)
+    public void SetupDialogue(string dialogue)
+    {
+        textBox.SetActive(true);
+        CreateSubStrings(dialogue);
+        DisplayNextDialogue();
+        
+    }
+
+
+    public void DisplayNextDialogue()
     {
         if (currentSubStringIndex == subStrings.Count)
         {
             ResetDialogue();
+            return;
         }
-
-        if (!isDialogueBoxActive)
+        if (isTypeWriterRunning)
         {
-            CreateSubStrings(dialogue);
-            StartCoroutine(TypeWriter(subStrings[currentSubStringIndex]));
+            DisplayAllDialogueImmediately();
+            return;
         }
-        else
-            StartCoroutine(TypeWriter(subStrings[currentSubStringIndex]));
 
-        currentSubStringIndex++;
+        StartCoroutine(TypeWriter(subStrings[currentSubStringIndex]));
     }
 
     private void ResetDialogue()
@@ -47,9 +54,8 @@ public class DialogueManager : MonoBehaviour
 
         subStrings.Clear();
         currentSubStringIndex = 0;
-        stringCurrentlyBeingTypwritten = string.Empty;
+        stringCurrentlyBeingTypewritten = string.Empty;
         isTypeWriterRunning = false;
-        isDialogueBoxActive = false;
     }
 
 
@@ -57,16 +63,16 @@ public class DialogueManager : MonoBehaviour
     private void CreateSubStrings(string dialogue)
     {
         subStrings = new List<string>();
-        int lastIndex;
+        int lastIndex = 0;
         char[] charArray = dialogue.ToCharArray();
         for (int i = 0; i < charArray.Length; i++)
         {
-            lastIndex = i;
             char currentChar = charArray[i];
-            if (currentChar == '\n' && charArray[i+1] != '\0')
+            if (i == charArray.Length - 1 || currentChar == '\n')
             {
-                subStrings.Add(dialogue.Substring(lastIndex, i));
-                
+                subStrings.Add(dialogue.Substring(lastIndex, i - lastIndex));
+                Debug.Log(dialogue.Substring(lastIndex, i - lastIndex));
+                lastIndex = i+1;
             }
         }
     }
@@ -75,7 +81,7 @@ public class DialogueManager : MonoBehaviour
     {
         isTypeWriterRunning = true;
         string stringToBuild = "";
-        stringCurrentlyBeingTypwritten = dialogue;
+        stringCurrentlyBeingTypewritten = dialogue;
         foreach (char character in dialogue)
         { 
             stringToBuild = stringToBuild + character;
@@ -83,12 +89,15 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeWriterDelayBetweenChars);
         }
         isTypeWriterRunning = false;
+        currentSubStringIndex++;
     }
 
-    public void DisplayAllDialogueImmediately(string dialogue)
+    public void DisplayAllDialogueImmediately()
     {
         StopAllCoroutines();
-        textField.text = stringCurrentlyBeingTypwritten;
+        textField.text = stringCurrentlyBeingTypewritten;
+        currentSubStringIndex++;
+        isTypeWriterRunning = false;
     }
 
 
