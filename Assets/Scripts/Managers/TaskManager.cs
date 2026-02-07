@@ -8,27 +8,47 @@ using UnityEngine;
  */
 public class TaskManager : MonoBehaviour
 {
-    //Events
+    
     public delegate void EventHandler();
+    //Painting Events
     public event EventHandler MonaLisaTaskComplete;
     public event EventHandler RomeoTaskComplete;
     public event EventHandler JulietTaskComplete;
-    
+    public event EventHandler RomeoTaskGive;
+    public event EventHandler JulietTaskGive;
+    //Global Events
+
     //Runtime Vars
+
+
+    #region Mona Lisa
+
 
     public void MonaLisaSmileCheckBoxMarked()
     {
         MonaLisaTaskComplete?.Invoke();
     }
 
-    public void JulietMessageRecieved()
+    #endregion
+
+    public void JulietMessageCorrect()
     { 
-        
+        JulietTaskComplete?.Invoke();
     }
 
-    public void RomeoMessageRecieved()
+    public void RomeoMessageCorrect()
     { 
-        
+        RomeoTaskComplete?.Invoke();
+    }
+
+    public void JulietTaskGiveTrigger()
+    {
+        JulietTaskGive?.Invoke();
+    }
+
+    public void RomeoTaskGiveTrigger()
+    { 
+        RomeoTaskGive?.Invoke();
     }
 
 

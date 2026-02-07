@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8760269db515c5e44a68cd6cd5ab73f3, type: 3}
+  m_Name: Respond2
+  m_EditorClassIdentifier: 
+  isTaskDialogue: 0
+  giveTaskDialogue: 
+  completeTaskDialogue: 
+  failTaskDialogue: 
+  hasNextDialogue: 1
+  nextDialogue: {fileID: 11400000, guid: a0eda11d6a661c446b6b232510063ef5, type: 2}
+  isSpecialDialogue: 0
+  specialDialogue: 
+  hasResponseChoices: 1
+  responseOptions:
+  - 'At midnight, I will call to you. So don''t be lazy and join me.
+
+'
+  - 'When the moon gets super high, a ghost is going to sing, so don''t be vane and
+    flirt with it.
+
+'
+  - 'Don''t be a prick and start singing when we''re all trying to sleep.
+
+'
+  correctResponseIndex: 0

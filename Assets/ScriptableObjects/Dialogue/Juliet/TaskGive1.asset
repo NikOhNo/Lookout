@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8760269db515c5e44a68cd6cd5ab73f3, type: 3}
+  m_Name: TaskGive1
+  m_EditorClassIdentifier: 
+  isTaskDialogue: 1
+  giveTaskDialogue: 'Ahh, and as the night dawns, so too doth this nightguard of
+    mine. Prithee, guardian of such fallen daylight, might a woman of such wonton
+    nature make a request?
+
+    Mine obsessive love furrows to my heart, wouldst
+    thou deliver unto love itself a whisper on the wind?
+
+    Convey unto him, this
+    tale: oh, dearest Romeo, hither to my heart, hither to my lungs, they rest within
+    thy hands.
+
+    When the night shifts to its peak, might a song whisper in these
+    decrepit halls and cast thy vanity aside.
+
+    I beseech thee, Romeo, to accompany
+    me through the gaze of such moonlit eyes.
+
+'
+  completeTaskDialogue: 
+  failTaskDialogue: 
+  hasNextDialogue: 0
+  nextDialogue: {fileID: 0}
+  isSpecialDialogue: 0
+  specialDialogue: 
+  hasResponseChoices: 0
+  responseOptions: []
+  correctResponseIndex: 0

@@ -11,24 +11,35 @@ public class DialogueManager : MonoBehaviour
     //Refs
     [SerializeField] private TextMeshProUGUI textField;
     [SerializeField] private GameObject textBox;
+    [SerializeField] private ReferenceManager referenceManager;
+    [SerializeField] private TaskManager taskManager;
 
     //Runtime Vars
     public bool isTypeWriterRunning = false;
-    public bool IsDialogueRunning => textBox.activeSelf;
+    public bool IsDialogueRunning = false;
     private List<string> subStrings = new();
     private int currentSubStringIndex = 0;
     private string stringCurrentlyBeingTypewritten;
+    private PaintingBase currentPainting;
 
     //Tuning Vars
     [SerializeField] private float typeWriterDelayBetweenChars;
 
-    public void SetupDialogue(string dialogue)
+    private void Start()
     {
+        referenceManager = ReferenceManager.Instance;
+        taskManager = referenceManager.taskManager;
+    }
+
+    public void SetupDialogue(string dialogue, PaintingBase currentPainting)
+    {
+        IsDialogueRunning = true;
+        this.currentPainting = currentPainting;
         textBox.SetActive(true);
         CreateSubStrings(dialogue);
         DisplayNextDialogue();
-        
     }
+
 
     public void DisplayNextDialogue()
     {
@@ -48,9 +59,10 @@ public class DialogueManager : MonoBehaviour
 
     private void ResetDialogue()
     {
-
+        IsDialogueRunning = false;
+        currentPainting.DialogueEnded();
+        currentPainting = null;
         textBox.SetActive(false);
-
         subStrings.Clear();
         currentSubStringIndex = 0;
         stringCurrentlyBeingTypewritten = string.Empty;
@@ -62,7 +74,6 @@ public class DialogueManager : MonoBehaviour
     //It works meow T_T -cralvin
     private void CreateSubStrings(string dialogue)
     {
-        subStrings = new List<string>();
         int lastIndex = 0;
         char[] charArray = dialogue.ToCharArray();
         for (int i = 0; i < charArray.Length; i++)

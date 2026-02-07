@@ -6,5 +6,6 @@ public class PJuliet : PaintingBase, IInteractable
     {
         base.Start();
         taskManager.RomeoTaskComplete += TaskComplete;
+        
     }
 }

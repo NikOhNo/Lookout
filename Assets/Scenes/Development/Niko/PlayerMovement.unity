@@ -517,9 +517,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e191e993bb702f4fa5713e49ab560d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: []
-  paintingName: Romeo
   placeHolder: 
+  dialogue:
+  - {fileID: 11400000, guid: c3f2b81b8316b8547ba5bad44c9d5327, type: 2}
+  - {fileID: 11400000, guid: 5b8019e4862d2f145a2f1ecb37ec0c3b, type: 2}
+  - {fileID: 11400000, guid: a0eda11d6a661c446b6b232510063ef5, type: 2}
+  paintingName: Romeo
+  timeBetweenTasks: 0
+  paintingState: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,9 +1328,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02efced08a580d944bf01864d1f9b2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: []
-  paintingName: Juliet
   placeHolder: 
+  dialogue:
+  - {fileID: 11400000, guid: 58212f6b397e31b46a3f4c257513b2a6, type: 2}
+  paintingName: Juliet
+  timeBetweenTasks: 0
+  paintingState: 0
 --- !u!54 &877676418
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2566,6 +2574,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textField: {fileID: 1384147437}
   textBox: {fileID: 1130534858}
+  referenceManager: {fileID: 0}
+  taskManager: {fileID: 0}
   isTypeWriterRunning: 0
   typeWriterDelayBetweenChars: 0.05
 --- !u!4 &1477656395
@@ -3282,9 +3292,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6b058aa0dd8654682ec5ca83f427da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeHolder: 
   dialogue: []
   paintingName: 
-  placeHolder: 
+  timeBetweenTasks: 0
+  paintingState: 0
   meowSFX:
   - {fileID: 8300000, guid: 685eefe2d8d9029428f66454328fd023, type: 3}
   - {fileID: 8300000, guid: d7a6309d8f0219a47a6b0934b960763a, type: 3}

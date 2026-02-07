@@ -3,6 +3,11 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/*
+ * The execution order of what happens when you talk to a painting goes as follows:
+ * Interact -> DialogueManager logic runs -> DialogueEnded -> UpdateState
+ */
+
 public class PaintingBase : MonoBehaviour, IInteractable
 {
     public enum PaintingState
@@ -11,6 +16,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
         HASTASKTOGIVE, //When you talk to a painting and they give you a task
         WAITINGFORTASKCOMPLETION, //When you talk to a painting and they've given you a task that
                                   //you haven't completed
+        WAITINGFORRESPONSE, //When you're in the middle of answering a multiple choice quiz from a painting
         PISSEDOFF, //When you talk to a painting after you didn't complete their task on time.
     }
     public Interactor Interactor { get; set; }
@@ -34,10 +40,17 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     //This interact function just displays nextDialogueToBeShown, which is updated elsewhere through
     //UpdateState or some other means
-    public void Interact()
+    public virtual void Interact()
     {
+        if (currentDialogueIndex >= dialogue.Length)
+        {
+            //will add what happens when you run out of dialogue later
+            //prolly just pull from a pool of random options
+            return;
+        }
+
         if (!dialogueManager.IsDialogueRunning)
-            dialogueManager.SetupDialogue(dialogue[currentDialogueIndex].giveTaskDialogue);
+            dialogueManager.SetupDialogue(nextDialogueToBeShown, this);
         else
             dialogueManager.DisplayNextDialogue();
         // Interactor?.Notifier.ShowInteract(InteractText);
@@ -48,9 +61,9 @@ public class PaintingBase : MonoBehaviour, IInteractable
         
     }
 
-    //If we want special behavior when states are updated, put it in this switch statement. 
-    //Otherwise, calling UpdateStatus will automatically set the state and dialogue accordingly.
-    protected virtual void UpdateStatus(PaintingState newState)
+    //For any generic behavior when states are updated, put it in this switch statement. 
+    //For any SPECIAL behavior do NOT put it in this method unless you want to override the entire switch.
+    protected virtual void UpdateState(PaintingState newState)
     {
         paintingState = newState;
         switch (newState)
@@ -58,20 +71,60 @@ public class PaintingBase : MonoBehaviour, IInteractable
             case PaintingState.HASTASKTOGIVE:
                 nextDialogueToBeShown = dialogue[currentDialogueIndex].giveTaskDialogue;
                 break;
+            case PaintingState.IDLE:
+                
+                break;
 
         }
     }
 
+    public virtual void TaskGive()
+    { 
+        
+    }
+
+
     //Specific paintings can have special behavior for each of these with their overrides.
+    //BY DEFAULT: This sets the next dialogue to CompleteTaskDialogue and then plays it immediately
+    //If there isn't any more special behavior beyond this, you don't need to override this method
     protected virtual void TaskComplete() //Recieves TaskComplete events from TaskManager
     {
         nextDialogueToBeShown = dialogue[currentDialogueIndex].completeTaskDialogue;
+        Interact(); //Immediately trigger dialogue
+        UpdateState(PaintingState.IDLE);
+        currentDialogueIndex++;
     }
+
+    //Any specific things that happen when Dialogue Ends can be overriden (VFX, SFX, animations, etc.)
+    public virtual void DialogueEnded()
+    {
+        CheckForAndPlayNextDialogue();
+    }
+
+    //Checks for special dialogue/response dialogue and automatically plays them
+    protected virtual void CheckForAndPlayNextDialogue()
+    {
+        DialogueScriptableObject currentDialogue = dialogue[currentDialogueIndex];
+        if (currentDialogue.hasNextDialogue)
+        {
+            if (currentDialogue.isSpecialDialogue)
+            {
+                nextDialogueToBeShown = currentDialogue.specialDialogue;
+                Interact();
+            }
+            if (currentDialogue.hasResponseChoices)
+            { 
+                //Show more responses
+            }
+            currentDialogueIndex++;
+        }
+    }
+
 
     protected IEnumerator TimeBetweenTasksTimer()
     { 
         yield return new WaitForSeconds(timeBetweenTasks);
-        UpdateStatus(PaintingState.HASTASKTOGIVE);
+        UpdateState(PaintingState.HASTASKTOGIVE);
     }
 
     //Specific paintings subscribe to TaskManager's events in their Start override.
@@ -80,7 +133,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
         referenceManager = ReferenceManager.Instance;
         this.taskManager = referenceManager.taskManager;
         this.dialogueManager = referenceManager.dialogueManager;
-        
+        UpdateState(PaintingState.IDLE);
     }
 
     // Update is called once per frame

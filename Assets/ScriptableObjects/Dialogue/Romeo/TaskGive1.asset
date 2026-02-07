@@ -10,18 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8760269db515c5e44a68cd6cd5ab73f3, type: 3}
-  m_Name: ML1
+  m_Name: TaskGive1
   m_EditorClassIdentifier: 
-  isTaskDialogue: 1
-  giveTaskDialogue: "My, you are the new night guard, are you not? \nIt was truly
-    a pity to lose the last one... alas, they were not quite up to our standards.\nI
-    am certain you will be capable of it, however. Merely appease the art, and the
-    rest will come as it should."
-  completeTaskDialogue: "You see? Not too difficult. \nIt is always a pleasant time
-    here, and the light shines so delightfully on my canvas."
+  giveTaskDialogue: 
+  completeTaskDialogue: 
   failTaskDialogue: 
-  hasNextDialogue: 0
-  nextDialogue: {fileID: 0}
   isSpecialDialogue: 0
   specialDialogue: 
   hasResponseChoices: 0
