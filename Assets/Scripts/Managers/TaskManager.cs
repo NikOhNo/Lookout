@@ -8,17 +8,36 @@ using UnityEngine;
  */
 public class TaskManager : MonoBehaviour
 {
-    
+    //Refs
+    private ReferenceManager referenceManager;
+    private DialogueManager dialogueManager;
+
+
     public delegate void EventHandler();
     //Painting Events
     public event EventHandler MonaLisaTaskComplete;
     public event EventHandler RomeoTaskComplete;
     public event EventHandler JulietTaskComplete;
-    public event EventHandler RomeoTaskGive;
-    public event EventHandler JulietTaskGive;
     //Global Events
 
     //Runtime Vars
+    public bool isCarryingRomeosMessageForJuliet = false;
+    public bool isCarryingJulietsMessageForRomeo = false;
+    public float globalTimer = 0;
+
+    private void Start()
+    {
+        referenceManager = ReferenceManager.Instance;
+        dialogueManager = referenceManager.dialogueManager;
+    }
+
+    private void Update()
+    {
+        if (!dialogueManager.IsDialogueRunning)
+        {
+            globalTimer += Time.deltaTime;
+        }
+    }
 
 
     #region Mona Lisa
@@ -39,22 +58,6 @@ public class TaskManager : MonoBehaviour
     public void RomeoMessageCorrect()
     { 
         RomeoTaskComplete?.Invoke();
-    }
-
-    public void JulietTaskGiveTrigger()
-    {
-        JulietTaskGive?.Invoke();
-    }
-
-    public void RomeoTaskGiveTrigger()
-    { 
-        RomeoTaskGive?.Invoke();
-    }
-
-
-    void Start()
-    {
-        
     }
 
 

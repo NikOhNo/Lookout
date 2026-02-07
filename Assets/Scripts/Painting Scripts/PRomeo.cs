@@ -1,4 +1,5 @@
 using System.Threading.Tasks.Sources;
+using UnityEditor;
 using UnityEngine;
 
 public class PRomeo : PaintingBase, IInteractable
@@ -8,26 +9,39 @@ public class PRomeo : PaintingBase, IInteractable
         base.Start();
         
         taskManager.JulietTaskComplete += TaskComplete;
-        taskManager.JulietTaskGive += () => UpdateState(PaintingState.WAITINGFORTASKCOMPLETION);
+        UpdateState(PaintingState.WAITINGFORTASKCOMPLETION);
     }
 
     public override void Interact()
     {
         if (paintingState == PaintingState.WAITINGFORTASKCOMPLETION)
         {
-            nextDialogueToBeShown = dialogue[currentDialogueIndex].specialDialogue;
-            UpdateState(PaintingState.WAITINGFORRESPONSE);
-        }
-        else if (paintingState == PaintingState.WAITINGFORRESPONSE)
-        {
-            nextDialogueToBeShown = dialogue[currentDialogueIndex].specialDialogue;
+            if (taskManager.isCarryingJulietsMessageForRomeo)
+            {
+                nextDialogueToBeShown = dialogue[currentDialogueIndex].specialDialogue;
+                UpdateState(PaintingState.WAITINGFORRESPONSE);
+            }
+            else
+            { 
+                //Play oh so yearnful where is my love dialogue type shit
+            }
         }
         base.Interact();
     }
 
-    protected override void CheckForAndPlayNextDialogue()
+    protected override void TaskComplete()
     {
-        base.CheckForAndPlayNextDialogue();
+        base.TaskComplete();
+        taskManager.isCarryingJulietsMessageForRomeo = false;
+    }
+
+    public override void DialogueEnded()
+    {
+        base.DialogueEnded();
+        if (paintingState == PaintingState.WAITINGFORTASKCOMPLETION)
+        {
+            taskManager.isCarryingRomeosMessageForJuliet = true;
+        }
     }
 
 }

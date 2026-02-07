@@ -5,7 +5,7 @@ using UnityEngine;
 
 /*
  * The execution order of what happens when you talk to a painting goes as follows:
- * Interact -> DialogueManager logic runs -> DialogueEnded -> UpdateState
+ * Interact -> UpdateState -> DialogueManager logic runs -> DialogueEnded
  */
 
 public class PaintingBase : MonoBehaviour, IInteractable
@@ -34,7 +34,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
     [SerializeField] protected int timeBetweenTasks;
 
     //Runtime Vars
-    protected int currentDialogueIndex;
+    public int currentDialogueIndex;
     protected string nextDialogueToBeShown;
     public PaintingState paintingState;
 
@@ -42,6 +42,8 @@ public class PaintingBase : MonoBehaviour, IInteractable
     //UpdateState or some other means
     public virtual void Interact()
     {
+        
+
         if (currentDialogueIndex >= dialogue.Length)
         {
             //will add what happens when you run out of dialogue later
@@ -50,15 +52,27 @@ public class PaintingBase : MonoBehaviour, IInteractable
         }
 
         if (!dialogueManager.IsDialogueRunning)
-            dialogueManager.SetupDialogue(nextDialogueToBeShown, this);
+            dialogueManager.SetupDialogue(nextDialogueToBeShown, this, dialogue[currentDialogueIndex].nextDialogue);
         else
             dialogueManager.DisplayNextDialogue();
         // Interactor?.Notifier.ShowInteract(InteractText);
     }
 
-    protected virtual void GetNextDialogue()
+    //Overload for interact. STATE UPDATE ALWAYS HAPPENS BEFORE DIALOGUE PLAYS
+    public virtual void Interact(PaintingState newState)
     { 
-        
+        UpdateState(newState);
+        if (currentDialogueIndex >= dialogue.Length)
+        {
+            //will add what happens when you run out of dialogue later
+            //prolly just pull from a pool of random options
+            return;
+        }
+
+        if (!dialogueManager.IsDialogueRunning)
+            dialogueManager.SetupDialogue(nextDialogueToBeShown, this, dialogue[currentDialogueIndex].nextDialogue);
+        else
+            dialogueManager.DisplayNextDialogue();
     }
 
     //For any generic behavior when states are updated, put it in this switch statement. 
@@ -78,9 +92,21 @@ public class PaintingBase : MonoBehaviour, IInteractable
         }
     }
 
+    protected virtual void UpdateState()
+    {
+        switch (paintingState)
+        {
+            case PaintingState.IDLE:
+            {
+                break;
+            }
+        }
+    }
+
+
     public virtual void TaskGive()
-    { 
-        
+    {
+        UpdateState(PaintingState.WAITINGFORTASKCOMPLETION);
     }
 
 
@@ -90,34 +116,14 @@ public class PaintingBase : MonoBehaviour, IInteractable
     protected virtual void TaskComplete() //Recieves TaskComplete events from TaskManager
     {
         nextDialogueToBeShown = dialogue[currentDialogueIndex].completeTaskDialogue;
-        Interact(); //Immediately trigger dialogue
-        UpdateState(PaintingState.IDLE);
+        Interact(PaintingState.IDLE); //Immediately trigger dialogue
         currentDialogueIndex++;
     }
 
     //Any specific things that happen when Dialogue Ends can be overriden (VFX, SFX, animations, etc.)
     public virtual void DialogueEnded()
     {
-        CheckForAndPlayNextDialogue();
-    }
 
-    //Checks for special dialogue/response dialogue and automatically plays them
-    protected virtual void CheckForAndPlayNextDialogue()
-    {
-        DialogueScriptableObject currentDialogue = dialogue[currentDialogueIndex];
-        if (currentDialogue.hasNextDialogue)
-        {
-            if (currentDialogue.isSpecialDialogue)
-            {
-                nextDialogueToBeShown = currentDialogue.specialDialogue;
-                Interact();
-            }
-            if (currentDialogue.hasResponseChoices)
-            { 
-                //Show more responses
-            }
-            currentDialogueIndex++;
-        }
     }
 
 

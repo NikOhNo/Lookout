@@ -15,7 +15,4 @@ public class PMonaLisa : PaintingBase
         base.TaskComplete();
     }
 
-    protected override void GetNextDialogue()
-    {
-    }
 }

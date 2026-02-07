@@ -21,6 +21,7 @@ public class DialogueManager : MonoBehaviour
     private int currentSubStringIndex = 0;
     private string stringCurrentlyBeingTypewritten;
     private PaintingBase currentPainting;
+    private DialogueScriptableObject nextDialogueObject;
 
     //Tuning Vars
     [SerializeField] private float typeWriterDelayBetweenChars;
@@ -31,22 +32,44 @@ public class DialogueManager : MonoBehaviour
         taskManager = referenceManager.taskManager;
     }
 
-    public void SetupDialogue(string dialogue, PaintingBase currentPainting)
+    public void SetupDialogue(string dialogue, PaintingBase currentPainting, DialogueScriptableObject nextDialogue)
     {
         IsDialogueRunning = true;
         this.currentPainting = currentPainting;
         textBox.SetActive(true);
         CreateSubStrings(dialogue);
         DisplayNextDialogue();
+
+        if (nextDialogue)
+            nextDialogueObject = nextDialogue;
     }
 
+    //Checks for special dialogue/response dialogue and automatically plays them
+    private void SetupNextDialogue()
+    {
+        if (nextDialogueObject.isSpecialDialogue)
+            SetupDialogue(nextDialogueObject.specialDialogue, currentPainting, nextDialogueObject.nextDialogue);
+        else if (nextDialogueObject.hasResponseChoices)
+        { 
+            //Not Implemented: Response choices panel
+        }
+        currentPainting.currentDialogueIndex++;
+    }
 
     public void DisplayNextDialogue()
     {
         if (currentSubStringIndex == subStrings.Count)
         {
-            ResetDialogue();
-            return;
+            if (nextDialogueObject)
+            {
+                SetupNextDialogue();   
+                return;
+            }
+            else
+            {
+                ResetDialogue();
+                return;
+            }
         }
         if (isTypeWriterRunning)
         {
