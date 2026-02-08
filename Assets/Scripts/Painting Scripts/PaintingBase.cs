@@ -32,7 +32,8 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     //Tuning Vars
     [SerializeField] protected string paintingName;
-    [SerializeField] protected int timeBetweenTasks;
+    [SerializeField] protected float timeBetweenTasks;
+    [SerializeField] protected float timeBeforePissedOff;
     [TextArea(3, 20)]
     [SerializeField] private List<string> randomDialogue = new();
 
@@ -41,6 +42,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
     protected string nextDialogueToBeShown;
     public PaintingState paintingState;
     private List<string> randomDialogueGraveyard = new();
+    protected float timeThatIllGetPissedOffAt;
 
     //This interact function just displays nextDialogueToBeShown, which is updated elsewhere through
     //UpdateState or some other means
@@ -85,6 +87,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
             case PaintingState.HASTASKTOGIVE:
             {
                 paintingState = PaintingState.WAITINGFORTASKCOMPLETION;
+                StartPissedOffTimer();
                 nextDialogueToBeShown = dialogue[currentDialogueIndex].giveTaskDialogue;
                 break;        
             }
@@ -118,6 +121,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     public virtual void TaskGive()
     {
+
     }
 
 
@@ -129,6 +133,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
         UpdateState(PaintingState.IDLE, dialogue[currentDialogueIndex].completeTaskDialogue);
         nextDialogueToBeShown = dialogue[currentDialogueIndex].completeTaskDialogue;
         currentDialogueIndex++;
+        StartCoroutine(TimeBetweenTasksTimer());
     }
 
     //Any specific things that happen when Dialogue Ends can be overriden (VFX, SFX, animations, etc.)
@@ -137,10 +142,16 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     }
 
+    public void StartPissedOffTimer()
+    {
+        timeThatIllGetPissedOffAt = taskManager.globalTimer + timeBeforePissedOff;
+    }
 
     protected IEnumerator TimeBetweenTasksTimer()
     { 
         yield return new WaitForSeconds(timeBetweenTasks);
+        StartPissedOffTimer();
+        UpdateState(PaintingState.HASTASKTOGIVE, dialogue[currentDialogueIndex].giveTaskDialogue);
     }
 
     //Specific paintings subscribe to TaskManager's events in their Start override.
@@ -151,9 +162,9 @@ public class PaintingBase : MonoBehaviour, IInteractable
         this.dialogueManager = referenceManager.dialogueManager;
     }
 
-    // Update is called once per frame
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
-        
+        if (taskManager.globalTimer >= timeThatIllGetPissedOffAt)
+            UpdateState(PaintingState.PISSEDOFF, dialogue[currentDialogueIndex].failTaskDialogue);
     }
 }

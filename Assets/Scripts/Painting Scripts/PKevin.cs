@@ -21,8 +21,7 @@ public class PKevin : PaintingBase
         StartCoroutine(PlayRandomMeow());
     }
 
-    // Update is called once per frame
-    protected override void Update()
+    protected override void FixedUpdate()
     {
         currentTimeUntilFail -= Time.deltaTime;
 
