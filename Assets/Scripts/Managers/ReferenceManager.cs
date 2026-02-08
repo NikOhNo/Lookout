@@ -7,6 +7,8 @@ public class ReferenceManager : MonoBehaviour
     //Refs
     public DialogueManager dialogueManager;
     public TaskManager taskManager;
+    public GameManager gameManager;
+    public PlayerItemHandler playerItemHandler;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

@@ -29,6 +29,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
     protected ReferenceManager referenceManager;
     protected TaskManager taskManager;
     protected DialogueManager dialogueManager;
+    protected GameManager gameManager;
 
     //Tuning Vars
     [SerializeField] protected string paintingName;
@@ -98,6 +99,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
             }
             case PaintingState.PISSEDOFF:
             {
+                gameManager.updateNumberOfPissedOffPaintings(-1);
                 paintingState = PaintingState.IDLE;
                 break;
             }
@@ -149,7 +151,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     protected IEnumerator TimeBetweenTasksTimer()
     { 
-        yield return new WaitForSeconds(timeBetweenTasks);
+        yield return new WaitForSeconds(timeBetweenTasks + gameManager.GetRandomTimeBetweenTasksModifier());
         StartPissedOffTimer();
         UpdateState(PaintingState.HASTASKTOGIVE, dialogue[currentDialogueIndex].giveTaskDialogue);
     }
@@ -160,11 +162,16 @@ public class PaintingBase : MonoBehaviour, IInteractable
         referenceManager = ReferenceManager.Instance;
         this.taskManager = referenceManager.taskManager;
         this.dialogueManager = referenceManager.dialogueManager;
+        this.gameManager = referenceManager.gameManager;
     }
 
     protected virtual void FixedUpdate()
     {
         if (taskManager.globalTimer >= timeThatIllGetPissedOffAt)
+        {
             UpdateState(PaintingState.PISSEDOFF, dialogue[currentDialogueIndex].failTaskDialogue);
+            gameManager.updateNumberOfPissedOffPaintings(1);
+        }
+        
     }
 }

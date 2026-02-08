@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mona Lisa
       objectReference: {fileID: 0}
+    - target: {fileID: 1400964816612003188, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7618460703305078190, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.38
@@ -77,5 +81,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550c4f6fa999f4b4cbebdbc8598bb0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: []
-  paintingName: 
+  placeHolder: 
+  dialogue:
+  - {fileID: 11400000, guid: 1c9775a87e761b1459856a8b7b4e45c2, type: 2}
+  - {fileID: 11400000, guid: 59205cea32a5b5346b8e98dcc0db2483, type: 2}
+  - {fileID: 11400000, guid: 4c7321512408eaf429a704397982360c, type: 2}
+  - {fileID: 11400000, guid: b81d6885f8d348d459fc6b4468ec6fc8, type: 2}
+  - {fileID: 11400000, guid: 5b24452f30ab82541a4ea3e4650b753e, type: 2}
+  paintingName: Mona Lisa
+  timeBetweenTasks: 15
+  timeBeforePissedOff: 9999
+  randomDialogue:
+  - meow
+  - meoewwwww
+  currentDialogueIndex: 0
+  paintingState: 0
