@@ -524,7 +524,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a0eda11d6a661c446b6b232510063ef5, type: 2}
   paintingName: Romeo
   timeBetweenTasks: 0
+  randomDialogue:
+  - asdfasdf
+  - asdfasdf
+  - asdfasdf
+  currentDialogueIndex: 0
   paintingState: 0
+  julietMyLove: {fileID: 877676417}
+  waitingForJulietsMessage: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,7 +1340,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 58212f6b397e31b46a3f4c257513b2a6, type: 2}
   paintingName: Juliet
   timeBetweenTasks: 0
+  randomDialogue:
+  - 'wooofer
+
+'
+  - 'meowwwt
+
+'
+  currentDialogueIndex: 0
   paintingState: 0
+  romeoMyLove: {fileID: 298215699}
 --- !u!54 &877676418
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2577,6 +2593,7 @@ MonoBehaviour:
   referenceManager: {fileID: 0}
   taskManager: {fileID: 0}
   isTypeWriterRunning: 0
+  IsDialogueRunning: 0
   typeWriterDelayBetweenChars: 0.05
 --- !u!4 &1477656395
 Transform:
@@ -2637,6 +2654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166a98e45ef124742aa5a9c3398c3be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalTimer: 0
 --- !u!1 &1741422639
 GameObject:
   m_ObjectHideFlags: 0
@@ -3296,6 +3314,8 @@ MonoBehaviour:
   dialogue: []
   paintingName: 
   timeBetweenTasks: 0
+  randomDialogue: []
+  currentDialogueIndex: 0
   paintingState: 0
   meowSFX:
   - {fileID: 8300000, guid: 685eefe2d8d9029428f66454328fd023, type: 3}
@@ -3325,6 +3345,18 @@ PrefabInstance:
       propertyPath: 'dialogue.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 1c9775a87e761b1459856a8b7b4e45c2, type: 2}
+    - target: {fileID: 1738016880093456335, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: randomDialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1738016880093456335, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: 'randomDialogue.Array.data[0]'
+      value: asdf
+      objectReference: {fileID: 0}
+    - target: {fileID: 1738016880093456335, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
+      propertyPath: 'randomDialogue.Array.data[1]'
+      value: asdf
+      objectReference: {fileID: 0}
     - target: {fileID: 2627782735009010172, guid: 5a19b9d0bc271cb488ef39977ff5c9bf, type: 3}
       propertyPath: m_IsKinematic
       value: 0

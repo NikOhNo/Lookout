@@ -13,6 +13,7 @@ public class PMonaLisa : PaintingBase
     protected override void TaskComplete()
     {
         base.TaskComplete();
+        Interact();
     }
 
 }

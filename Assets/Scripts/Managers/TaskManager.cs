@@ -21,8 +21,6 @@ public class TaskManager : MonoBehaviour
     //Global Events
 
     //Runtime Vars
-    public bool isCarryingRomeosMessageForJuliet = false;
-    public bool isCarryingJulietsMessageForRomeo = false;
     public float globalTimer = 0;
 
     private void Start()
@@ -49,16 +47,6 @@ public class TaskManager : MonoBehaviour
     }
 
     #endregion
-
-    public void JulietMessageCorrect()
-    { 
-        JulietTaskComplete?.Invoke();
-    }
-
-    public void RomeoMessageCorrect()
-    { 
-        RomeoTaskComplete?.Invoke();
-    }
 
 
 

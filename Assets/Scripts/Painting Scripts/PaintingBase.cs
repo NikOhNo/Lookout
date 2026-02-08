@@ -1,5 +1,6 @@
 using NUnit.Framework.Internal.Commands;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -32,18 +33,20 @@ public class PaintingBase : MonoBehaviour, IInteractable
     //Tuning Vars
     [SerializeField] protected string paintingName;
     [SerializeField] protected int timeBetweenTasks;
+    [TextArea(3, 20)]
+    [SerializeField] private List<string> randomDialogue = new();
 
     //Runtime Vars
     public int currentDialogueIndex;
     protected string nextDialogueToBeShown;
     public PaintingState paintingState;
+    private List<string> randomDialogueGraveyard = new();
 
     //This interact function just displays nextDialogueToBeShown, which is updated elsewhere through
     //UpdateState or some other means
     public virtual void Interact()
     {
-        
-
+        Debug.Log("Current State: " + paintingState);
         if (currentDialogueIndex >= dialogue.Length)
         {
             //will add what happens when you run out of dialogue later
@@ -52,44 +55,22 @@ public class PaintingBase : MonoBehaviour, IInteractable
         }
 
         if (!dialogueManager.IsDialogueRunning)
+        {
+            UpdateState();
             dialogueManager.SetupDialogue(nextDialogueToBeShown, this, dialogue[currentDialogueIndex].nextDialogue);
+        }
+            
         else
             dialogueManager.DisplayNextDialogue();
         // Interactor?.Notifier.ShowInteract(InteractText);
     }
 
-    //Overload for interact. STATE UPDATE ALWAYS HAPPENS BEFORE DIALOGUE PLAYS
-    public virtual void Interact(PaintingState newState)
-    { 
-        UpdateState(newState);
-        if (currentDialogueIndex >= dialogue.Length)
-        {
-            //will add what happens when you run out of dialogue later
-            //prolly just pull from a pool of random options
-            return;
-        }
-
-        if (!dialogueManager.IsDialogueRunning)
-            dialogueManager.SetupDialogue(nextDialogueToBeShown, this, dialogue[currentDialogueIndex].nextDialogue);
-        else
-            dialogueManager.DisplayNextDialogue();
-    }
-
     //For any generic behavior when states are updated, put it in this switch statement. 
     //For any SPECIAL behavior do NOT put it in this method unless you want to override the entire switch.
-    protected virtual void UpdateState(PaintingState newState)
+    public virtual void UpdateState(PaintingState newState, string nextDialogueToShow)
     {
         paintingState = newState;
-        switch (newState)
-        {
-            case PaintingState.HASTASKTOGIVE:
-                nextDialogueToBeShown = dialogue[currentDialogueIndex].giveTaskDialogue;
-                break;
-            case PaintingState.IDLE:
-                
-                break;
-
-        }
+        nextDialogueToBeShown = nextDialogueToShow;
     }
 
     protected virtual void UpdateState()
@@ -98,15 +79,45 @@ public class PaintingBase : MonoBehaviour, IInteractable
         {
             case PaintingState.IDLE:
             {
+                nextDialogueToBeShown = GetRandomDialogue();
+                break;
+            }
+            case PaintingState.HASTASKTOGIVE:
+            {
+                paintingState = PaintingState.WAITINGFORTASKCOMPLETION;
+                nextDialogueToBeShown = dialogue[currentDialogueIndex].giveTaskDialogue;
+                break;        
+            }
+            case PaintingState.WAITINGFORTASKCOMPLETION:
+            {
+                paintingState = PaintingState.PISSEDOFF;
+                break;
+            }
+            case PaintingState.PISSEDOFF:
+            {
+                paintingState = PaintingState.IDLE;
                 break;
             }
         }
     }
 
+    protected string GetRandomDialogue()
+    {
+        if (randomDialogue.Count <= 0)
+        {
+            randomDialogue = new List<string>(randomDialogueGraveyard);
+            randomDialogueGraveyard.Clear();
+        }
+
+        Debug.Log(randomDialogue.Count);
+        string dialogueChosen = randomDialogue[Random.Range(0, randomDialogue.Count)];
+        randomDialogue.Remove(dialogueChosen);
+        randomDialogueGraveyard.Add(dialogueChosen);
+        return dialogueChosen;
+    }
 
     public virtual void TaskGive()
     {
-        UpdateState(PaintingState.WAITINGFORTASKCOMPLETION);
     }
 
 
@@ -115,8 +126,8 @@ public class PaintingBase : MonoBehaviour, IInteractable
     //If there isn't any more special behavior beyond this, you don't need to override this method
     protected virtual void TaskComplete() //Recieves TaskComplete events from TaskManager
     {
+        UpdateState(PaintingState.IDLE, dialogue[currentDialogueIndex].completeTaskDialogue);
         nextDialogueToBeShown = dialogue[currentDialogueIndex].completeTaskDialogue;
-        Interact(PaintingState.IDLE); //Immediately trigger dialogue
         currentDialogueIndex++;
     }
 
@@ -130,7 +141,6 @@ public class PaintingBase : MonoBehaviour, IInteractable
     protected IEnumerator TimeBetweenTasksTimer()
     { 
         yield return new WaitForSeconds(timeBetweenTasks);
-        UpdateState(PaintingState.HASTASKTOGIVE);
     }
 
     //Specific paintings subscribe to TaskManager's events in their Start override.
@@ -139,7 +149,6 @@ public class PaintingBase : MonoBehaviour, IInteractable
         referenceManager = ReferenceManager.Instance;
         this.taskManager = referenceManager.taskManager;
         this.dialogueManager = referenceManager.dialogueManager;
-        UpdateState(PaintingState.IDLE);
     }
 
     // Update is called once per frame
