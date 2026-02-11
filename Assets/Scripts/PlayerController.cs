@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Unity.Cinemachine;
+using Unity.Mathematics;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,11 +10,17 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] float moveSpeed = 25f;
-    [SerializeField] CharacterController controller;
-    [SerializeField] GameObject spriteObject;
+    [SerializeField] float cameraSpeed = 5f;
     [SerializeField] float coffeeDecrementRate = 1.0f; // per second
+
+    [Header("References")]
+    [SerializeField] GameObject body;
+    [SerializeField] GameObject spriteObject;
+    [SerializeField] CharacterController controller;
     [SerializeField] ProgressBar coffeeProgressBar;
+
     CinemachineCamera cinemaCam;
     Vector2 moveInput;
     Animator Animator => GetComponent<Animator>();
@@ -32,6 +39,12 @@ public class PlayerController : MonoBehaviour
     }
     float _coffeeMeter = 100.0f;
 
+    void Awake()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void Start()
     {
         cinemaCam = FindFirstObjectByType<CinemachineCamera>();
@@ -40,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Vector3 move = moveSpeed * Time.deltaTime * new Vector3(moveInput.x, 0, moveInput.y);
+        move  = body.transform.TransformDirection(move);
 
         if (controller.isGrounded)
         {
@@ -60,6 +74,13 @@ public class PlayerController : MonoBehaviour
                 vignette.intensity.value = 1.0f - (CoffeeMeter / 100.0f);
             }
         }
+    }
+
+    public void HandleLook(InputAction.CallbackContext context)
+    {
+        Vector2 lookInput = context.ReadValue<Vector2>();
+        
+        body.transform.Rotate(Vector3.up, lookInput.x * cameraSpeed, Space.World);
     }
 
     public void HandleMove(InputAction.CallbackContext context)
