@@ -1,10 +1,21 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //Refs
+    ReferenceManager referenceManager;
+    DialogueManager dialogueManager;
+
     //Runtime Vars
+    public float globalTimer = 0;
+
     private int numberOfPissedOffPaintings = 0;
+    private int maxNumberOfPissedOfPaintings;
+    private int minPissedOffTimeModifier;
+    private int maxPissedOfftimeModifier;
 
     //Tuning Vars
     public enum Difficulty { 
@@ -13,35 +24,49 @@ public class GameManager : MonoBehaviour
         HARD
     }
     public Difficulty difficulty;
-    private int maxNumberOfPissedOfPaintings;
-    private int minTimeBetweenTasksModifier;
-    private int maxTimeBetweenTasksModifier;
+    [SerializeField] private float gameOverTimeSlowSpeed;
+    [Header("Difficulty Tuning Vars")]
+    [SerializeField] private int easyMaxNumOfPissedOffPaintings;
+    [SerializeField] private int easyMinPissedOffTimeModifier;
+    [SerializeField] private int easyMaxPissedOffTimeModifier;
+    [SerializeField] private int mediumMaxNumOfPissedOffPaintings;
+    [SerializeField] private int mediumMinPissedOffTimeModifier;
+    [SerializeField] private int mediumMaxPissedOffTimeModifier;
+    [SerializeField] private int hardMaxNumOfPissedOffPaintings;
+    [SerializeField] private int hardMinPissedOffTimeModifier;
+    [SerializeField] private int hardMaxPissedOffTimeModifier;
+    private void Start()
+    {
+        ChangeDifficulty(difficulty);
+        referenceManager = ReferenceManager.Instance;
+        dialogueManager = referenceManager.dialogueManager;
+    }
 
     public void ChangeDifficulty(Difficulty newDifficulty)
     {
         if (newDifficulty == Difficulty.EASY)
         {
-            maxNumberOfPissedOfPaintings = 5;
-            minTimeBetweenTasksModifier = 0;
-            maxTimeBetweenTasksModifier = 10;
+            maxPissedOfftimeModifier = easyMaxPissedOffTimeModifier;
+            minPissedOffTimeModifier = easyMinPissedOffTimeModifier;
+            maxNumberOfPissedOfPaintings = easyMaxNumOfPissedOffPaintings;
         }
         else if (newDifficulty == Difficulty.MEDIUM)
         {
-            maxNumberOfPissedOfPaintings = 3;
-            minTimeBetweenTasksModifier = -5;
-            maxTimeBetweenTasksModifier = 5;
+            maxPissedOfftimeModifier = mediumMaxPissedOffTimeModifier;
+            minPissedOffTimeModifier = mediumMinPissedOffTimeModifier;
+            maxNumberOfPissedOfPaintings = mediumMaxNumOfPissedOffPaintings;
         }
         else if (newDifficulty == Difficulty.HARD)
         { 
-            maxNumberOfPissedOfPaintings = 2;
-            minTimeBetweenTasksModifier = 1;
-            maxTimeBetweenTasksModifier = -10;
+            maxPissedOfftimeModifier = hardMaxPissedOffTimeModifier;
+            minPissedOffTimeModifier = hardMinPissedOffTimeModifier;
+            maxNumberOfPissedOfPaintings = hardMaxNumOfPissedOffPaintings;
         }
     }
 
-    public int GetRandomTimeBetweenTasksModifier()
+    public int GetRandomTimeToGetPissedOffModifier()
     {
-        return Random.Range(minTimeBetweenTasksModifier, maxTimeBetweenTasksModifier + 1);
+        return Random.Range(minPissedOffTimeModifier, maxNumberOfPissedOfPaintings + 1);
     }
 
 
@@ -52,21 +77,34 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(GameOver());
         }
+        Debug.Log("Pissed off Paintings: " + numberOfPissedOffPaintings + "/" + maxNumberOfPissedOfPaintings);
     }
 
     private IEnumerator GameOver()
     {
+        float currentTimeScale = Time.timeScale;
         Debug.Log("Game Over!");
-        while (Time.timeScale > 0) {
+        while (true) {
             yield return new WaitForEndOfFrame();
-            Time.timeScale -= 0.1f;
+            currentTimeScale -= gameOverTimeSlowSpeed;
+            if (currentTimeScale < 0)
+            {
+                Time.timeScale = 0;
+                yield break;
+            }
+            else
+                Time.timeScale = currentTimeScale;
         }
     }
 
-
-    private void Start()
+    private void Update()
     {
-        
+        if (!dialogueManager.IsDialogueRunning)
+        {
+            globalTimer += Time.deltaTime;
+            Debug.Log(globalTimer);
+        }
     }
+
 
 }

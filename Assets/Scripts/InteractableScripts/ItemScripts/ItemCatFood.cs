@@ -1,21 +1,21 @@
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class ItemCatFood : ItemBase, IInteractable
+public class ItemCatFood : ItemBase
 {
 
-    public string InteractText => isItemHeld ? "Drop Sashimi" : playerItemHandler.nearPainting
-        ? "Use Sashimi" : "Pick Up Sashimi";
-
-    public Interactor Interactor { get; set; }
-
-    public void Interact()
+    protected override void Start()
     {
-        
+        reciever = typeof(PKevin);
+        base.Start();
     }
 
-    protected override void OnTriggerEnter(Collider other)
+    public override void DeliverItem(PaintingBase painting)
     {
-        base.OnTriggerEnter(other);
+        base.DeliverItem(painting);
+        taskManager.KevinFoodDelivered();
+        Destroy(gameObject);
     }
 
 }

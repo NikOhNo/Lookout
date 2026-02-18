@@ -60,8 +60,57 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8916978809929517500, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916978809929517500, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1400964816612003188, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6105945773101664080}
   m_SourcePrefab: {fileID: 100100000, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+--- !u!1 &7949891457877499190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1400964816612003188, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+  m_PrefabInstance: {fileID: 9016921389441601602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6105945773101664080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949891457877499190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6b058aa0dd8654682ec5ca83f427da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeHolder: 
+  dialogue: []
+  paintingName: 
+  timeBetweenTasks: 20
+  timeBeforePissedOff: 0
+  randomDialogue:
+  - meeeowwww
+  - mrrrowwwww
+  - purrrrrrr
+  - mEEEEorrwwww!
+  currentDialogueIndex: 0
+  paintingState: 0
+  meowSFX:
+  - {fileID: 8300000, guid: 685eefe2d8d9029428f66454328fd023, type: 3}
+  - {fileID: 8300000, guid: d7a6309d8f0219a47a6b0934b960763a, type: 3}
+  - {fileID: 8300000, guid: d7a2625e5f82a184f8c50d2ccac1212f, type: 3}
+  - {fileID: 8300000, guid: 1e3eef79be07e074388646fc99fc50e9, type: 3}
+  maxTimeBetweenMeows: 10
+  minTimeBetweenMeows: 0.5
+  vibrationIntensity: 0.01
+  maxVibrationIntensity: 50

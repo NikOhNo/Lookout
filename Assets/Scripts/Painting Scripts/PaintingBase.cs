@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 /*
  * The execution order of what happens when you talk to a painting goes as follows:
@@ -22,7 +23,6 @@ public class PaintingBase : MonoBehaviour, IInteractable
     }
     public Interactor Interactor { get; set; }
     public string InteractText => "Talk with " + paintingName;
-    [SerializeField] protected string placeHolder;
 
     //Refs
     public DialogueScriptableObject[] dialogue;
@@ -43,7 +43,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
     protected string nextDialogueToBeShown;
     public PaintingState paintingState;
     private List<string> randomDialogueGraveyard = new();
-    protected float timeThatIllGetPissedOffAt;
+    protected float timeThatIllGetPissedOffAt = 9999;
 
     //This interact function just displays nextDialogueToBeShown, which is updated elsewhere through
     //UpdateState or some other means
@@ -52,11 +52,10 @@ public class PaintingBase : MonoBehaviour, IInteractable
         Debug.Log("Current State: " + paintingState);
         if (currentDialogueIndex >= dialogue.Length)
         {
-            //will add what happens when you run out of dialogue later
-            //prolly just pull from a pool of random options
+            GetRandomDialogue();
             return;
-        }
 
+        }
         if (!dialogueManager.IsDialogueRunning)
         {
             UpdateState();
@@ -74,6 +73,11 @@ public class PaintingBase : MonoBehaviour, IInteractable
     {
         paintingState = newState;
         nextDialogueToBeShown = nextDialogueToShow;
+    }
+
+    public virtual void UpdateState(PaintingState newState)
+    {
+        paintingState = newState;
     }
 
     protected virtual void UpdateState()
@@ -114,10 +118,10 @@ public class PaintingBase : MonoBehaviour, IInteractable
             randomDialogueGraveyard.Clear();
         }
 
-        Debug.Log(randomDialogue.Count);
         string dialogueChosen = randomDialogue[Random.Range(0, randomDialogue.Count)];
         randomDialogue.Remove(dialogueChosen);
         randomDialogueGraveyard.Add(dialogueChosen);
+        Debug.Log("Playing Random Dialogue Index: " + randomDialogue.Count);
         return dialogueChosen;
     }
 
@@ -146,12 +150,15 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     public void StartPissedOffTimer()
     {
-        timeThatIllGetPissedOffAt = taskManager.globalTimer + timeBeforePissedOff;
+        timeThatIllGetPissedOffAt = gameManager.globalTimer 
+            + (timeBeforePissedOff + gameManager.GetRandomTimeToGetPissedOffModifier());
+        Debug.Log("Started " + paintingName +  "'s Pissed Off Timer. Current Time: " + Time.deltaTime
+            + ", Time When Pissed Off: " + timeThatIllGetPissedOffAt);
     }
 
-    protected IEnumerator TimeBetweenTasksTimer()
-    { 
-        yield return new WaitForSeconds(timeBetweenTasks + gameManager.GetRandomTimeBetweenTasksModifier());
+    protected virtual IEnumerator TimeBetweenTasksTimer()
+    {
+        yield return new WaitForSeconds(timeBetweenTasks);
         StartPissedOffTimer();
         UpdateState(PaintingState.HASTASKTOGIVE, dialogue[currentDialogueIndex].giveTaskDialogue);
     }
@@ -167,8 +174,9 @@ public class PaintingBase : MonoBehaviour, IInteractable
 
     protected virtual void FixedUpdate()
     {
-        if (taskManager.globalTimer >= timeThatIllGetPissedOffAt)
+        if (gameManager.globalTimer >= timeThatIllGetPissedOffAt && paintingState != PaintingState.PISSEDOFF)
         {
+            Debug.Log(paintingName + " is PISSED OFF");
             UpdateState(PaintingState.PISSEDOFF, dialogue[currentDialogueIndex].failTaskDialogue);
             gameManager.updateNumberOfPissedOffPaintings(1);
         }

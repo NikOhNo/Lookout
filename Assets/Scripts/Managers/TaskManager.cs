@@ -18,10 +18,11 @@ public class TaskManager : MonoBehaviour
     public event EventHandler MonaLisaTaskComplete;
     public event EventHandler RomeoTaskComplete;
     public event EventHandler JulietTaskComplete;
+    public event EventHandler KevinTaskComplete;
     //Global Events
 
     //Runtime Vars
-    public float globalTimer = 0;
+    
 
     private void Start()
     {
@@ -31,23 +32,33 @@ public class TaskManager : MonoBehaviour
 
     private void Update()
     {
-        if (!dialogueManager.IsDialogueRunning)
-        {
-            globalTimer += Time.deltaTime;
-        }
+        
     }
 
 
     #region Mona Lisa
 
-
     public void MonaLisaSmileCheckBoxMarked()
     {
+        DebugLogEventCall(MonaLisaTaskComplete.ToString());
         MonaLisaTaskComplete?.Invoke();
     }
 
     #endregion
 
+    #region Kevin
 
+    public void KevinFoodDelivered()
+    {
+        DebugLogEventCall(KevinTaskComplete.ToString());
+        KevinTaskComplete?.Invoke();
+    }
+
+    #endregion
+
+    private void DebugLogEventCall(string eventName)
+    {
+        Debug.Log("Invoked Event: " + eventName);
+    }
 
 }
