@@ -12,7 +12,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textField;
     [SerializeField] private GameObject textBox;
     [SerializeField] private ReferenceManager referenceManager;
-    [SerializeField] private TaskManager taskManager;
+    private TaskManager taskManager;
 
     //Runtime Vars
     public bool isTypeWriterRunning = false;

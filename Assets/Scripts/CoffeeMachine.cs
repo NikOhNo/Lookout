@@ -20,7 +20,6 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         audioSource = GetComponent<AudioSource>();
         brewTime = audioSource.clip.length;
         brewTime = 5.0f;
-        Debug.Log(coffeeReady);
     }
     
     void Update()

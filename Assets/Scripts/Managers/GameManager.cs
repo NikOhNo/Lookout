@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         if (!dialogueManager.IsDialogueRunning)
         {
             globalTimer += Time.deltaTime;
-            Debug.Log(globalTimer);
+            //Debug.Log(globalTimer);
         }
     }
 
