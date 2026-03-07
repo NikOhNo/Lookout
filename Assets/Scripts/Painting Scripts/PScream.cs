@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PScream : MonoBehaviour
+public class PScream : PaintingBase
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

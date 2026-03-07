@@ -7,7 +7,7 @@ public class PMonaLisa : PaintingBase
     {
         base.Start();
         taskManager.MonaLisaTaskComplete += TaskComplete;
-        nextDialogueToBeShown = dialogue[currentDialogueIndex].giveTaskDialogue;
+        UpdateState(PaintingState.HASTASKTOGIVE);
     }
 
     protected override void TaskComplete()

@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour
         taskManager = referenceManager.taskManager;
     }
 
-    public void SetupDialogue(string dialogue, PaintingBase currentPainting, DialogueScriptableObject nextDialogue)
+    public void SetupDialogue(string dialogue, PaintingBase currentPainting)
     {
         IsDialogueRunning = true;
         this.currentPainting = currentPainting;
@@ -40,15 +40,15 @@ public class DialogueManager : MonoBehaviour
         CreateSubStrings(dialogue);
         DisplayNextDialogue();
 
-        if (nextDialogue)
-            nextDialogueObject = nextDialogue;
+        if (currentPainting.dialogue[currentPainting.currentDialogueIndex].hasNextDialogue)
+            nextDialogueObject = currentPainting.dialogue[currentPainting.currentDialogueIndex].nextDialogue;
     }
 
     //Checks for special dialogue/response dialogue and automatically plays them
     private void SetupNextDialogue()
     {
         if (nextDialogueObject.isSpecialDialogue)
-            SetupDialogue(nextDialogueObject.specialDialogue, currentPainting, nextDialogueObject.nextDialogue);
+            SetupDialogue(nextDialogueObject.specialDialogue, currentPainting);
         else if (nextDialogueObject.hasResponseChoices)
         { 
             //Not Implemented: Response choices panel

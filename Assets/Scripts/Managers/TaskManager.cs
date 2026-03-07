@@ -22,7 +22,7 @@ public class TaskManager : MonoBehaviour
     //Global Events
 
     //Runtime Vars
-    
+    public int currentGossip;
 
     private void Start()
     {
@@ -35,6 +35,15 @@ public class TaskManager : MonoBehaviour
         
     }
 
+    #region Pearl Girl
+
+    public void UpdateGossipCount(int incomingGossip)
+    {
+        currentGossip += incomingGossip;
+    }
+
+
+    #endregion
 
     #region Mona Lisa
 

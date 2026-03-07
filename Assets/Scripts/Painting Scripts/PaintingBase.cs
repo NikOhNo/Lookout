@@ -59,7 +59,7 @@ public class PaintingBase : MonoBehaviour, IInteractable
         if (!dialogueManager.IsDialogueRunning)
         {
             UpdateState();
-            dialogueManager.SetupDialogue(nextDialogueToBeShown, this, dialogue[currentDialogueIndex].nextDialogue);
+            dialogueManager.SetupDialogue(nextDialogueToBeShown, this);
         }
             
         else
@@ -98,7 +98,6 @@ public class PaintingBase : MonoBehaviour, IInteractable
             }
             case PaintingState.WAITINGFORTASKCOMPLETION:
             {
-                paintingState = PaintingState.PISSEDOFF;
                 break;
             }
             case PaintingState.PISSEDOFF:
@@ -138,7 +137,12 @@ public class PaintingBase : MonoBehaviour, IInteractable
     {
         UpdateState(PaintingState.IDLE, dialogue[currentDialogueIndex].completeTaskDialogue);
         nextDialogueToBeShown = dialogue[currentDialogueIndex].completeTaskDialogue;
-        currentDialogueIndex++;
+        if (currentDialogueIndex <= dialogue.Length)
+        {
+            currentDialogueIndex++;
+        }
+        else
+            currentDialogueIndex = 0;
         StartCoroutine(TimeBetweenTasksTimer());
     }
 

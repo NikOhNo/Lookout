@@ -59,5 +59,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1400964816612003188, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 161968802850130237}
   m_SourcePrefab: {fileID: 100100000, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+--- !u!1 &6369822441762691718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1400964816612003188, guid: 542b8a442b3de404b89fb694741e9153, type: 3}
+  m_PrefabInstance: {fileID: 5410826260515985394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &161968802850130237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369822441762691718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aba7e71cb801eb45aad1c35674ecb49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PPearlGirl
+  dialogue: []
+  paintingName: Girl with Pearl Earring
+  timeBetweenTasks: 15
+  timeBeforePissedOff: 15
+  randomDialogue: []
+  currentDialogueIndex: 0
+  paintingState: 0
