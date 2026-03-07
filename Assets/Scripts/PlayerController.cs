@@ -18,12 +18,13 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject body;
     [SerializeField] GameObject spriteObject;
-    [SerializeField] CharacterController controller;
+    [SerializeField] Rigidbody rb;
     [SerializeField] ProgressBar coffeeProgressBar;
 
     CinemachineCamera cinemaCam;
     Vector2 moveInput;
-    Animator Animator => GetComponent<Animator>();
+    Vector2 lookInput;
+    Animator animator;
 
     float CoffeeMeter
     {
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -50,21 +53,17 @@ public class PlayerController : MonoBehaviour
         cinemaCam = FindFirstObjectByType<CinemachineCamera>();
     }
 
+    void FixedUpdate()
+    {
+        body.transform.Rotate(Vector3.up, lookInput.x * cameraSpeed, Space.World);
+
+        Vector3 move = moveSpeed * Time.fixedDeltaTime * new Vector3(moveInput.x, 0, moveInput.y);
+        move  = body.transform.TransformDirection(move);
+        rb.MovePosition(rb.position + move);
+    }
+
     private void Update()
     {
-        Vector3 move = moveSpeed * Time.deltaTime * new Vector3(moveInput.x, 0, moveInput.y);
-        move  = body.transform.TransformDirection(move);
-
-        if (controller.isGrounded)
-        {
-            move.y = -1f;
-        }
-        else
-        {
-            move.y += Physics.gravity.y * Time.deltaTime;
-        }
-        controller.Move(move);
-
         // update coffee
         CoffeeMeter -= coffeeDecrementRate * Time.deltaTime;
         if (cinemaCam.TryGetComponent<CinemachineVolumeSettings>(out var volumeSettings))
@@ -78,17 +77,15 @@ public class PlayerController : MonoBehaviour
 
     public void HandleLook(InputAction.CallbackContext context)
     {
-        Vector2 lookInput = context.ReadValue<Vector2>();
-        
-        body.transform.Rotate(Vector3.up, lookInput.x * cameraSpeed, Space.World);
+        lookInput = context.ReadValue<Vector2>();
     }
 
     public void HandleMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        Animator.SetFloat("x", moveInput.x);
+        animator.SetFloat("x", moveInput.x);
         HandleSpriteFlip();
-        Animator.SetFloat("z", moveInput.y);
+        animator.SetFloat("z", moveInput.y);
     }
 
     public void HandleInteract(InputAction.CallbackContext context)
